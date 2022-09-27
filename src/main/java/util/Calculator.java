@@ -7,7 +7,7 @@ public class Calculator {
 
     private final Map<Character, Integer> PRIORITY = Map.of(')', -1, '(', 1, '+', 2, '-', 2, '*', 3, '/', 3);
 
-    public  double calculate(String expression) {
+    public double calculate(String expression) {
         expression = checkLengthOfExpression(expression);
         if (!checkBrackets(expression)) {
             System.err.println("Некорректно расставлены скобки");
@@ -22,11 +22,11 @@ public class Calculator {
 
     private String checkLengthOfExpression(String expression) {
         StringBuilder number = new StringBuilder();
-        if (expression.length() == 0){
+        if (expression.length() == 0) {
             System.err.println("Пустое выражение");
             System.exit(0);
         }
-        if (expression.trim().length() <= 1) {
+        if (expression.trim().length() == 1) {
             char symbol = expression.toCharArray()[0];
             if (getPriority(symbol) != 0) {
                 System.err.println("Некорректное выражение");

@@ -3,9 +3,29 @@ import util.Calculator;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-class CalculatorTest {
+public class CalculatorTest {
 
     private final Calculator calculator = new Calculator();
+
+    @Test
+    void calculateSingleDigit(){
+        assertEquals(2, calculator.calculate("2"));
+    }
+
+    @Test
+    void calculateSingleNumber(){
+        assertEquals(22, calculator.calculate("22"));
+    }
+
+    @Test
+    void calculateSingleRealDigit(){
+        assertEquals(2.2, calculator.calculate("2.2"));
+    }
+
+    @Test
+    void calculateSingleRealNumber(){
+        assertEquals(22.2, calculator.calculate("22.2"));
+    }
 
     @Test
     void calculateSimpleExpressionOfSum() {
@@ -46,6 +66,4 @@ class CalculatorTest {
     void calculateComplexExpressionWithBrackets(){
         assertEquals(8, calculator.calculate("(2 + 2) * 2"));
     }
-
-
 }

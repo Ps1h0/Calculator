@@ -16,8 +16,8 @@ public class Prioritizer {
     public int getPriority(char token) {
         if (PRIORITY.containsKey(token))
             return PRIORITY.get(token);
-        if (Character.isDigit(token))
+        if (Character.isDigit(token) || token == ' ' || token == '.')
             return 0;
-        else throw new RuntimeException();
+        throw new RuntimeException("Некорректное выражение");
     }
 }

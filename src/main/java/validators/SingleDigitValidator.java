@@ -4,7 +4,7 @@ import util.Prioritizer;
 
 public class SingleDigitValidator implements Validator {
 
-    Prioritizer prioritizer;
+    private final Prioritizer prioritizer;
 
     {
         prioritizer = new Prioritizer();

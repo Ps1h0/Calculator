@@ -1,7 +1,9 @@
-package util;
+package calculator;
 
-import validators.Validator;
-import validators.ValidatorsFactory;
+import calculator.util.Classifier;
+import calculator.util.Operations;
+import calculator.validators.Validator;
+import calculator.validators.ValidatorsFactory;
 
 import java.math.BigDecimal;
 import java.util.Stack;
@@ -40,54 +42,43 @@ public class Calculator {
 
     private String defineOperations(String expression) {
         StringBuilder currentString = new StringBuilder();
-        Stack<Character> stack = new Stack<>();
-        int priority;
+        Stack<Character> operationsStack = new Stack<>();
         for (int i = 0; i < expression.length(); i++) {
             char currentChar = expression.charAt(i);
-            priority = prioritizer.getPriority(currentChar);
-            if (priority == 0) {
+            if (Classifier.isPartOfNumber(currentChar)) {
                 currentString.append(currentChar);
-                continue;
-            }
-            if (priority == 1) {
-                stack.push(currentChar);
-                continue;
-            }
-            if (priority > 1) {
+            } else if (Classifier.isOpenedBracket(currentChar)) {
+                operationsStack.push(currentChar);
+            } else if (Classifier.isOperation(currentChar)) {
                 currentString.append(' ');
-                while (!stack.empty()) {
-                    if (prioritizer.getPriority(stack.peek()) >= priority)
-                        currentString.append(stack.pop());
+                int priority = prioritizer.getPriority(currentChar);
+                while (!operationsStack.empty()) {
+                    if (prioritizer.getPriority(operationsStack.peek()) >= priority)
+                        currentString.append(operationsStack.pop());
                     else break;
                 }
-                stack.push(currentChar);
-                continue;
-            }
-            if (priority == -1) {
+                operationsStack.push(currentChar);
+            } else if (Classifier.isClosedBracket(currentChar)) {
                 currentString.append(' ');
-                while (prioritizer.getPriority(stack.peek()) != 1)
-                    currentString.append(stack.pop());
-                stack.pop();
+                while (prioritizer.getPriority(operationsStack.peek()) != 1)
+                    currentString.append(operationsStack.pop());
+                operationsStack.pop();
             }
         }
-        while (!stack.empty())
-            currentString.append(stack.pop());
+        while (!operationsStack.empty())
+            currentString.append(operationsStack.pop());
         return currentString.toString();
-
     }
 
     private double getAnswer(String expression) {
         StringBuilder operand = new StringBuilder();
         Stack<Double> stack = new Stack<>();
 
-        if (expression.length() == 1)
-            return Double.parseDouble(expression);
-
         for (int i = 0; i < expression.length(); i++) {
             char symbol = expression.charAt(i);
             if (symbol == ' ') continue;
-            if (prioritizer.getPriority(symbol) == 0) {
-                while (expression.charAt(i) != ' ' && prioritizer.getPriority(expression.charAt(i)) == 0) {
+            if (Classifier.isPartOfNumber(symbol)) {
+                while (expression.charAt(i) != ' ' && Classifier.isPartOfNumber(expression.charAt(i))) {
                     operand.append(expression.charAt(i++));
                     if (i == expression.length()) break;
                 }
@@ -96,21 +87,13 @@ public class Calculator {
             }
             if (i == expression.length()) continue;
             char operation = expression.charAt(i);
-            if (prioritizer.getPriority(operation) > 1) {
+            if (Classifier.isOperation(operation)) {
                 double a = stack.pop();
                 double b = stack.pop();
                 BigDecimal bda = BigDecimal.valueOf(a);
                 BigDecimal bdb = BigDecimal.valueOf(b);
-                if (operation == '+') stack.push(bdb.add(bda).doubleValue());
-                if (operation == '-') stack.push(bdb.subtract(bda).doubleValue());
-                if (operation == '*') stack.push(bdb.multiply(bda).doubleValue());
-                if (operation == '/') {
-                    if (a == 0) {
-                        System.err.println("Деление на ноль");
-                        return 0;
-                    }
-                    stack.push(bdb.divide(bda).doubleValue());
-                }
+                Operations o = Operations.getOperationBySymbol(operation);
+                stack.push(o.perform(bdb, bda).doubleValue());
             }
         }
         return stack.pop();

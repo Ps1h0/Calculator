@@ -1,7 +1,9 @@
+package calculatortests.validatorstests;
+
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import validators.EmptyExpressionValidator;
-import validators.ExpressionValidator;
+import calculator.validators.EmptyExpressionValidator;
+import calculator.validators.ExpressionValidator;
 
 import java.util.ArrayList;
 import java.util.List;

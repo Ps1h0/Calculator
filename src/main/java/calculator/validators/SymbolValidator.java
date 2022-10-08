@@ -1,4 +1,4 @@
-package validators;
+package calculator.validators;
 
 public class SymbolValidator implements Validator {
 

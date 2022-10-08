@@ -1,5 +1,7 @@
+package calculatortests.validatorstests;
+
 import org.junit.jupiter.api.Test;
-import validators.EmptyExpressionValidator;
+import calculator.validators.EmptyExpressionValidator;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;

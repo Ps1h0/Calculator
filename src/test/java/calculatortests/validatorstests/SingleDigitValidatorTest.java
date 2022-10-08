@@ -1,7 +1,9 @@
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
-import validators.SingleDigitValidator;
+package calculatortests.validatorstests;
 
+import calculator.validators.SingleDigitValidator;
+import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class SingleDigitValidatorTest {
@@ -15,6 +17,6 @@ public class SingleDigitValidatorTest {
 
     @Test
     void isValidWithSymbol(){
-        Assertions.assertThrows(RuntimeException.class, () -> singleDigitValidator.isValid("A"));
+        assertFalse(singleDigitValidator.isValid("A"));
     }
 }

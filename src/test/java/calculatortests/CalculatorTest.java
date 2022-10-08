@@ -1,5 +1,7 @@
+package calculatortests;
+
+import calculator.Calculator;
 import org.junit.jupiter.api.Test;
-import util.Calculator;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -65,5 +67,10 @@ public class CalculatorTest {
     @Test
     void calculateComplexExpressionWithBrackets(){
         assertEquals(8, calculator.calculate("(2 + 2) * 2"));
+    }
+
+    @Test
+    void calculateRealNumbers(){
+        assertEquals(3.45, calculator.calculate("1.2 + 2.25"));
     }
 }
